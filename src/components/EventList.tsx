@@ -94,6 +94,14 @@ export function EventList({
 
   return (
     <div ref={scrollerRef} className={styles.scroller} onScroll={handleScroll}>
+      {events.length === 0 && (
+        <div className={styles.empty} role="status">
+          <p className={styles.emptyTitle}>Empty water</p>
+          <p className={styles.emptyBody}>
+            No events on this day match the filter. Loosen it, or pick another day.
+          </p>
+        </div>
+      )}
       <ol className={styles.cards}>
         {events.map((event) => (
           <EventCard

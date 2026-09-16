@@ -1,6 +1,8 @@
 .chrome {
   position: relative;
-  z-index: 1;
+  /* Above the body, so the filter panel hanging from the hero paints over
+     the list. The two never overlap otherwise. */
+  z-index: 2;
   flex-shrink: 0;
   color: var(--chrome-fg);
   transition: color 600ms ease;
@@ -81,6 +83,18 @@
 .hero > * {
   position: relative;
   top: 4px;
+}
+
+/* The zone name at the left and the filter button at the right, on the
+   name's baseline. The box is as wide as the list below it, so the button's
+   right edge is the list's right edge, the way the valves' box is as wide as
+   the cockpit. */
+.headline {
+  display: flex;
+  align-items: last baseline;
+  justify-content: space-between;
+  gap: 22px;
+  width: var(--list-width);
 }
 
 /* The active card's zone, said once at the top of the page instead of once

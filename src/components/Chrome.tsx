@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import type { DayKey } from '../lib/days'
 import { ZONES, type ZoneKey } from '../lib/zones'
 import { DayValves } from './DayValves'
@@ -9,6 +10,8 @@ interface ChromeProps {
   dates: Record<DayKey, string | null>
   /** Zone of the active event: the hero's headline. */
   zone: ZoneKey
+  /** The filter disclosure, rendered beside the zone name. The page owns it. */
+  filter: ReactNode
   onSelectDay: (day: DayKey) => void
 }
 
@@ -16,12 +19,13 @@ interface ChromeProps {
  * Nav and hero. Never scrolls. The nav is a full-bleed 88px row in the
  * reference site's proportions, the wordmark at the left and the links at the
  * right, both on a pale foam banner. The hero below it carries the name of
- * the zone the active card is in and the ballast valves that pick the day.
- * The day itself is stamped on the valves; the zone's depth and clock span
- * are the cockpit's ZONE readout. Hero text below the banner is bone in every
- * zone, set once on the page through the --chrome-fg variable.
+ * the zone the active card is in, the filter button beside it, and the
+ * ballast valves that pick the day. The day itself is stamped on the valves;
+ * the zone's depth and clock span are the cockpit's ZONE readout. Hero text
+ * below the banner is bone in every zone, set once on the page through the
+ * --chrome-fg variable.
  */
-export function Chrome({ day, dates, zone, onSelectDay }: ChromeProps) {
+export function Chrome({ day, dates, zone, filter, onSelectDay }: ChromeProps) {
   return (
     <header className={styles.chrome}>
       <nav className={styles.nav}>
@@ -46,9 +50,12 @@ export function Chrome({ day, dates, zone, onSelectDay }: ChromeProps) {
         {/* Keyed by zone so crossing a boundary remounts the heading and
             replays its entrance, which is the "you have entered the twilight
             zone" moment now that the list has no headers of its own. */}
-        <h1 key={zone} className={styles.zoneName}>
-          {ZONES[zone].label}
-        </h1>
+        <div className={styles.headline}>
+          <h1 key={zone} className={styles.zoneName}>
+            {ZONES[zone].label}
+          </h1>
+          {filter}
+        </div>
         <DayValves day={day} dates={dates} onSelectDay={onSelectDay} />
       </div>
     </header>

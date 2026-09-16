@@ -2,11 +2,13 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import type { HackEvent } from '../api/types'
 import { homeCoordinate } from '../lib/bearing'
 import { groupByDay, type DayKey } from '../lib/days'
+import { EMPTY_FILTER, filterEvents, type EventFilter as Filter } from '../lib/filter'
 import { formatMonthDay } from '../lib/format'
 import { depthForTime, runContaining, zoneForTime, zoneRuns } from '../lib/zones'
 import { Backdrop } from './Backdrop'
 import { Chrome } from './Chrome'
 import { Cockpit } from './Cockpit'
+import { EventFilter } from './EventFilter'
 import { EventList, type EventListHandle } from './EventList'
 import styles from './SchedulePage.module.css'
 
@@ -17,11 +19,17 @@ import styles from './SchedulePage.module.css'
  * scrolled since. From the active event's start time come the zone (discrete:
  * labels, chrome color) and the depth (continuous: water). The cockpit is
  * downstream of the same value and adds no state of its own.
+ *
+ * Two smaller pieces of state pick which events are in play: the day, and
+ * the filter. The filter is applied here, before anything derives from the
+ * list, so the cockpit plots the same course the list shows: a filtered
+ * Friday has fewer stops, and they renumber.
  */
 export function SchedulePage({ events }: { events: HackEvent[] }) {
   const byDay = useMemo(() => groupByDay(events), [events])
   const home = useMemo(() => homeCoordinate(events), [events])
   const [day, setDay] = useState<DayKey>('friday')
+  const [filter, setFilter] = useState<Filter>(EMPTY_FILTER)
   const [hoveredId, setHoveredId] = useState<string | null>(null)
   const [readingId, setReadingId] = useState<string | null>(null)
   const listRef = useRef<EventListHandle>(null)
@@ -49,7 +57,9 @@ export function SchedulePage({ events }: { events: HackEvent[] }) {
     setReadingId(eventId)
   }, [])
 
-  const list = byDay[day]
+  // Memoised so an unchanged day keeps its array identity across renders:
+  // the list re-measures its reading line whenever `events` changes.
+  const list = useMemo(() => filterEvents(byDay[day], filter), [byDay, day, filter])
   const activeId = hoveredId ?? readingId ?? list[0]?.eventId ?? null
   const activeIndex = Math.max(0, list.findIndex((e) => e.eventId === activeId))
   const active = list[activeIndex] ?? null
@@ -70,21 +80,37 @@ export function SchedulePage({ events }: { events: HackEvent[] }) {
     saturday: dateOf(byDay.saturday),
     sunday: dateOf(byDay.sunday),
   }
-  const selectDay = (next: DayKey) => {
-    setDay(next)
+  // Changing the day or the filter changes which cards exist, so whatever was
+  // active is forgotten and the list starts over from its first card.
+  const forgetActive = () => {
     setHoveredId(null)
     setReadingId(null)
     lastReading.current = null
   }
+  const selectDay = (next: DayKey) => {
+    setDay(next)
+    forgetActive()
+  }
+  const changeFilter = (next: Filter) => {
+    setFilter(next)
+    forgetActive()
+  }
+  // The list remounts, scrolled to the top, whenever its set of cards changes.
+  const listKey = `${day}:${filter.zones.join(',')}:${filter.types.join(',')}`
 
   return (
     <div className={styles.page} data-zone={zone}>
       <Backdrop depth={depth} zone={zone} />
-      <Chrome day={day} dates={dates} zone={zone} onSelectDay={selectDay} />
+      <Chrome
+        day={day}
+        dates={dates}
+        zone={zone}
+        filter={<EventFilter filter={filter} onChange={changeFilter} />}
+        onSelectDay={selectDay}
+      />
       <div className={styles.body}>
-        {/* Keyed by day so switching days remounts the list scrolled to the top. */}
         <EventList
-          key={day}
+          key={listKey}
           ref={listRef}
           events={list}
           activeId={activeId}

@@ -33,6 +33,30 @@
   gap: 10px;
 }
 
+/* Shown instead of cards when the filter leaves the day with none. */
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 22px 20px;
+  border-radius: var(--radius-card);
+  border: 1px dashed var(--glass-card-border);
+  color: var(--color-bone);
+}
+
+.emptyTitle {
+  font-size: var(--text-title);
+  font-weight: 800;
+  line-height: 24px;
+}
+
+.emptyBody {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 23px;
+  opacity: 0.85;
+}
+
 .tail {
   /* Tall enough that the last card can still reach the reading line when the
      list is scrolled all the way down: container height minus line offset

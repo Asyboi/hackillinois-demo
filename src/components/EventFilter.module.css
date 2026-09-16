@@ -1,0 +1,186 @@
+/* The panel hangs from the button, right edges together, which is also the
+   list's right edge.
+
+   The hero lines its children up on their text baselines, which for this
+   box would put the button's text on the zone name's line and leave the
+   button's bottom edge hanging below it by the text's inset. The bottom
+   edge is what the eye reads against the name and the valve plates, so the
+   box rises by that inset: the button's bottom padding plus its border. */
+.disclosure {
+  --inset-bottom: 9px;
+  position: relative;
+  top: calc(-1 * var(--inset-bottom));
+  display: flex;
+}
+
+/* "FILTERS" in the plate's voice: Nunito at its heaviest, spaced capitals.
+   Card glass at rest, so it reads as the list's own control; filled with
+   the accent while the panel is open, the same language as a chip that is
+   on. Room on the right for the icon and the dot in the corner. */
+.toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  /* 8px bottom padding plus the 1px border is --inset-bottom above. */
+  padding: 8px 14px 8px 16px;
+  border: 1px solid var(--glass-card-border);
+  border-radius: 10px;
+  background: var(--glass-card);
+  color: var(--color-bone);
+  font-size: var(--text-body);
+  font-weight: 900;
+  line-height: 18px;
+  letter-spacing: 0.06em;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease;
+}
+
+.toggle:hover {
+  background: rgba(6, 28, 42, 0.45);
+  border-color: rgba(232, 237, 239, 0.3);
+}
+
+.toggle[aria-expanded='true'] {
+  background: var(--color-ultramarine);
+  border-color: var(--color-ultramarine);
+  color: #fff;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Something is applied. Sits in the button's top right corner, as on the
+   reference sketch, in bone so it reads on glass and on the accent alike. */
+.dot {
+  position: absolute;
+  top: 5px;
+  right: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-bone);
+}
+
+/* The panel: a narrow column under the button, over the cards. It is
+   denser glass than a card and blurs what is behind it, because it sits on
+   top of card text rather than on open water. The two groups stack, zone
+   over type, each a term with its chips listed beneath. "Clear" closes the
+   column and is absent until something is on. */
+.panel {
+  position: absolute;
+  /* 10px under the button, plus the inset the box rose by, so the panel's
+     top stays where it was against the list. */
+  top: calc(100% + 10px + var(--inset-bottom));
+  right: 0;
+  z-index: 2;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 14px 12px 12px;
+  border-radius: var(--radius-card);
+  background: rgba(6, 28, 42, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-card-border);
+  box-shadow: 0 18px 40px rgba(0, 3, 5, 0.35);
+  color: var(--color-bone);
+  animation: unfold 160ms ease;
+}
+
+/* A short rise on entry. The global reduced-motion rule collapses it. */
+@keyframes unfold {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* The cockpit's term voice: small spaced capitals in silt, heading its list. */
+.term {
+  padding-left: 4px;
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--color-silt);
+}
+
+.chips {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* The card chip's shape and voice, hollowed out and stretched to the
+   column's width so each reads as a line of the list, text at the left. A
+   1px border inside the card chip's 28px height, so the two line up. On, it
+   fills with the accent, the page's one color for "active". Hollow chips
+   keep the bone text so the panel's resting state is quiet. */
+.chip {
+  padding: 5px 11px;
+  text-align: left;
+  border: 1px solid var(--glass-card-border);
+  border-radius: 8px;
+  background: rgba(232, 237, 239, 0.06);
+  font-size: var(--text-label);
+  font-weight: 800;
+  line-height: 16px;
+  white-space: nowrap;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease;
+}
+
+.chip:hover {
+  background: rgba(232, 237, 239, 0.14);
+  border-color: rgba(232, 237, 239, 0.3);
+}
+
+.chip[aria-pressed='true'] {
+  background: var(--color-ultramarine);
+  border-color: var(--color-ultramarine);
+  color: #fff;
+}
+
+.toggle:focus-visible,
+.chip:focus-visible,
+.clear:focus-visible {
+  outline: 2px solid var(--color-ultramarine);
+  outline-offset: 2px;
+}
+
+/* The map link's treatment: bone text with a faint underline that fills in
+   on hover. The last line of the column, set in from the edge like the terms. */
+.clear {
+  align-self: flex-start;
+  padding-left: 4px;
+  font-size: var(--text-label);
+  font-weight: 700;
+  line-height: 16px;
+  opacity: 0.85;
+  text-decoration: underline;
+  text-decoration-color: rgba(232, 237, 239, 0.35);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 150ms ease;
+}
+
+.clear:hover,
+.clear:focus-visible {
+  opacity: 1;
+  text-decoration-color: currentColor;
+}
