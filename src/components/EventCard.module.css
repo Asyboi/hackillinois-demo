@@ -13,8 +13,8 @@
 }
 
 .card[data-active='true'] {
-  border-color: var(--color-coral);
-  background: rgba(240, 85, 60, 0.1);
+  border-color: var(--color-ultramarine);
+  background: rgba(27, 61, 138, 0.1);
 }
 
 .head {
@@ -40,9 +40,10 @@
   border-radius: 8px;
   background: rgba(127, 242, 208, 0.16);
   color: var(--color-biolum);
-  font-family: var(--font-mono);
+  /* The title's voice, Nunito at its heaviest, rather than the mono face the
+     cockpit readouts use, so the chip reads as part of the card's title row. */
   font-size: var(--text-label);
-  font-weight: 500;
+  font-weight: 800;
   line-height: 16px;
   white-space: nowrap;
 }

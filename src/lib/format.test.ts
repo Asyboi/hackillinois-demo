@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   durationMinutes,
   formatDistance,
+  formatMonthDay,
   formatRange,
   formatTime,
   toRoman,
@@ -21,6 +22,18 @@ describe('formatTime', () => {
 describe('formatRange', () => {
   it('joins start and end with a hyphen', () => {
     expect(formatRange(chicago(2, 27, 18), chicago(2, 27, 19, 30))).toBe('6:00 PM - 7:30 PM')
+  })
+})
+
+describe('formatMonthDay', () => {
+  it('renders month/day without padding, in the event time zone', () => {
+    expect(formatMonthDay(chicago(2, 27, 14))).toBe('2/27')
+    expect(formatMonthDay(chicago(3, 1, 6))).toBe('3/1')
+  })
+
+  it('uses the Urbana date, not the UTC date, late at night', () => {
+    // 11 PM Friday in Chicago is already Saturday in UTC.
+    expect(formatMonthDay(chicago(2, 27, 23))).toBe('2/27')
   })
 })
 

@@ -5,6 +5,19 @@
   overflow: hidden;
 }
 
+.sunrays {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  transition: opacity 900ms ease;
+  will-change: opacity;
+  /* Light fades with depth even inside the sunlit zone. */
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.55) 50%, transparent 88%);
+  mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.55) 50%, transparent 88%);
+}
+
 .seafloor {
   position: absolute;
   left: 0;

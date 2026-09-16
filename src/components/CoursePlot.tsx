@@ -71,7 +71,7 @@ export function CoursePlot({ events, activeIndex, onHoverChange, onSelectStop }:
 
       {active && (
         <div className={styles.label} aria-hidden="true">
-          <span className={`mono ${styles.labelMeta}`}>
+          <span className={styles.labelMeta}>
             {toRoman(activeIndex + 1)} · {formatTime(active.startTime)}
           </span>
           <span className={styles.labelName}>{active.name}</span>

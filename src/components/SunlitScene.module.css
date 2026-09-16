@@ -1,0 +1,20 @@
+/* Dark ink bodies against bright water, with a bone rim light on the top edge. */
+.silhouette {
+  color: var(--color-ink);
+  fill: currentColor;
+  opacity: 0.55;
+}
+
+.rim {
+  fill: none;
+  stroke: var(--color-bone);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.bubble {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 1;
+  opacity: 0.55;
+}

@@ -1,8 +1,38 @@
 import { describe, expect, it } from 'vitest'
-import { depthForTime, layerOpacities, zoneForTime } from './zones'
+import type { HackEvent } from '../api/types'
+import { depthForTime, layerOpacities, runContaining, zoneForTime, zoneRuns } from './zones'
 
 const chicago = (month: number, day: number, hour: number, minute = 0) =>
   Date.UTC(2026, month - 1, day, hour + 6, minute) / 1000
+
+const event = (eventId: string, startTime: number) => ({ eventId, startTime }) as HackEvent
+
+describe('runContaining', () => {
+  // Sunday's shape: the pre-dawn deadline in twilight, then daylight.
+  const sunday = [
+    event('deadline', chicago(3, 1, 6)),
+    event('showcase', chicago(3, 1, 10)),
+    event('closing', chicago(3, 1, 14)),
+  ]
+  const runs = zoneRuns(sunday)
+
+  it('finds the run of same-zone neighbours around an event', () => {
+    expect(runContaining(runs, 'closing')?.events.map((e) => e.eventId)).toEqual([
+      'showcase',
+      'closing',
+    ])
+  })
+
+  it('keeps a lone event in a run of its own', () => {
+    expect(runContaining(runs, 'deadline')?.zone).toBe('twilight')
+    expect(runContaining(runs, 'deadline')?.events).toHaveLength(1)
+  })
+
+  it('is null for no event or an unknown one', () => {
+    expect(runContaining(runs, null)).toBeNull()
+    expect(runContaining(runs, 'nope')).toBeNull()
+  })
+})
 
 describe('zoneForTime', () => {
   it('is sunlit through the afternoon', () => {

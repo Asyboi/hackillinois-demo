@@ -1,0 +1,40 @@
+/* Deep-water bodies that barely separate from the water; the rim light draws the shape. */
+.life {
+  color: var(--color-deep);
+}
+
+.body {
+  fill: currentColor;
+  stroke: var(--color-bone);
+  stroke-opacity: 0.3;
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.rim {
+  fill: none;
+  stroke: var(--color-bone);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* The lure's stalk and the lower teeth: thin bone lines, not lit. */
+.stalk {
+  fill: none;
+  stroke: var(--color-bone);
+  stroke-opacity: 0.55;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* Upper teeth, caught in the lure's light. */
+.lit {
+  fill: none;
+  stroke: var(--color-biolum);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.glow {
+  fill: var(--color-biolum);
+}

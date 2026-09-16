@@ -1,8 +1,7 @@
 import type { HackEvent } from '../api/types'
 import { headingFor, type Coordinate } from '../lib/bearing'
-import { concurrentWith } from '../lib/concurrency'
 import { stopDepthsMeters } from '../lib/soundings'
-import type { ZoneKey } from '../lib/zones'
+import type { ZoneKey, ZoneRun } from '../lib/zones'
 import styles from './Cockpit.module.css'
 import { CoursePlot } from './CoursePlot'
 import { Porthole } from './Porthole'
@@ -14,6 +13,8 @@ interface CockpitProps {
   /** Position of the active event in that list. */
   activeIndex: number
   zone: ZoneKey
+  /** The active event's run of same-zone neighbours, for the ZONE readout's span. */
+  run: ZoneRun | null
   depth: number
   /** Where the compass points from. Null if no event has a location. */
   home: Coordinate | null
@@ -26,7 +27,7 @@ interface CockpitProps {
  * course etched on the glass, over a cluster of instrument readouts. Every
  * value here is a pure function of the active event. The card already shows
  * title, time, place and description, so the cockpit shows only what the
- * card cannot: depth, zone, position in the day, concurrency and heading.
+ * card cannot: depth, zone, position in the day and heading.
  *
  * Text stays bone in every zone. The chassis glass is dark enough that ink
  * would not clear contrast on it even over sunlit water, same as the cards.
@@ -35,6 +36,7 @@ export function Cockpit({
   events,
   activeIndex,
   zone,
+  run,
   depth,
   home,
   onHoverChange,
@@ -57,10 +59,10 @@ export function Cockpit({
         stopIndex={activeIndex}
         stopCount={events.length}
         zone={zone}
+        run={run}
         depthMeters={depths[activeIndex] ?? 0}
         maxDepthMeters={Math.max(0, ...depths)}
         heading={active ? headingFor(active, home) : { kind: 'on-station' }}
-        concurrent={active ? concurrentWith(active, events) : 0}
       />
     </aside>
   )

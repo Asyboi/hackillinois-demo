@@ -12,13 +12,16 @@ export type DayKey = 'friday' | 'saturday' | 'sunday'
 
 export interface DayInfo {
   key: DayKey
+  /** The valve's accessible name. */
   label: string
+  /** Stamped on the valve plate, where the full name would crowd the wheel. */
+  short: string
 }
 
 export const DAYS: DayInfo[] = [
-  { key: 'friday', label: 'Friday' },
-  { key: 'saturday', label: 'Saturday' },
-  { key: 'sunday', label: 'Sunday' },
+  { key: 'friday', label: 'Friday', short: 'Fri' },
+  { key: 'saturday', label: 'Saturday', short: 'Sat' },
+  { key: 'sunday', label: 'Sunday', short: 'Sun' },
 ]
 
 const keyByWeekday: Partial<Record<number, DayKey>> = {

@@ -32,6 +32,30 @@
   text-align: right;
 }
 
+/* A value of several lines, each ending on the right edge. The term keeps the
+   value's line height so it sits on the first line rather than centred. */
+.stacked .value {
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+}
+
+.stacked .term {
+  align-self: start;
+  line-height: 22px;
+}
+
+/* The zone's depth and clock span, a step down from the name above them. */
+.zoneDetail {
+  display: flex;
+  gap: 10px;
+  font-size: var(--text-caption);
+  line-height: 18px;
+  opacity: 0.8;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
 .bar {
   width: 72px;
   height: 4px;
@@ -77,11 +101,11 @@
 }
 
 .station {
-  fill: var(--color-coral);
+  fill: var(--color-ultramarine);
 }
 
 .needle {
-  fill: var(--color-coral);
+  fill: var(--color-ultramarine);
   transform-origin: 12px 12px;
   transition: transform 600ms ease;
 }

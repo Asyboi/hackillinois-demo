@@ -2,31 +2,55 @@
   position: relative;
   z-index: 1;
   flex-shrink: 0;
-  padding: 0 var(--gutter);
   color: var(--chrome-fg);
   transition: color 600ms ease;
 }
 
+/* Full-bleed band, edge to edge, in the reference site's proportions. */
 .nav {
   display: flex;
+  height: 88px;
+}
+
+/* The left pane: the wordmark on the page's own water. */
+.brandPane {
+  flex: 1;
+  display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: 64px;
+  padding-left: var(--gutter);
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 18px;
-  font-weight: 900;
-  letter-spacing: -0.01em;
+  gap: 14px;
 }
 
+.mark {
+  width: 36px;
+  height: 47px;
+  color: var(--color-ultramarine);
+}
+
+.wordmark {
+  display: flex;
+  flex-direction: column;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 24px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* The right pane: the links, on the same water as the wordmark. Set large
+   and spaced wide so they hold their end of the band against the wordmark,
+   reaching back toward the middle without meeting it. */
 .links {
   display: flex;
-  gap: 28px;
-  font-size: 15px;
+  align-items: center;
+  gap: 64px;
+  padding: 0 var(--gutter) 0 48px;
+  font-size: 20px;
   font-weight: 600;
 }
 
@@ -35,54 +59,40 @@
 }
 
 .muted {
-  opacity: 0.62;
+  opacity: 0.85;
 }
 
+/* The zone name and the valves' date plates sit on one baseline: the last
+   baseline of each end, which for the manifold is the plate text under the
+   wheels. Bottom-edge alignment put the plates a step below the headline's
+   letters, because the two line boxes carry different descent. */
 .hero {
   display: flex;
-  align-items: flex-end;
+  align-items: last baseline;
   justify-content: space-between;
-  padding-top: 14px;
+  padding: 14px var(--gutter) 0;
 }
 
-.day {
-  font-size: var(--text-day);
+/* The active card's zone, said once at the top of the page instead of once
+   per zone inside the list. */
+.zoneName {
+  font-size: var(--text-hero);
   font-weight: 900;
-  line-height: 80px;
+  line-height: 88px;
   letter-spacing: -0.025em;
+  animation: surface 400ms ease;
 }
 
-.pills {
-  display: flex;
-  gap: 10px;
-  padding-bottom: 10px;
-}
-
-.pill {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 11px 18px;
-  border-radius: 999px;
-  border: 1.5px solid color-mix(in srgb, var(--chrome-fg) 35%, transparent);
-  font-size: 15px;
-  font-weight: 700;
-  transition:
-    background-color 300ms ease,
-    color 300ms ease,
-    border-color 300ms ease;
-}
-
-.pill[data-active='true'] {
-  background: var(--chrome-fg);
-  border-color: var(--chrome-fg);
-  color: var(--chrome-fg-inverse);
-  font-weight: 800;
-}
-
-.count {
-  font-family: var(--font-mono);
-  font-size: var(--text-caption);
-  font-weight: 500;
-  opacity: 0.7;
+/* A short rise on entry. Crossing a zone boundary remounts the heading, so
+   the new name arrives instead of just being swapped in. The global
+   reduced-motion rule collapses it to a jump. */
+@keyframes surface {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }

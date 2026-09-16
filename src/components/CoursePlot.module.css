@@ -41,13 +41,13 @@
 }
 
 .markActive {
-  fill: var(--color-coral);
+  fill: var(--color-ultramarine);
 }
 
 .ring {
-  fill: var(--color-coral);
+  fill: var(--color-ultramarine);
   fill-opacity: 0.18;
-  stroke: var(--color-coral);
+  stroke: var(--color-ultramarine);
   stroke-opacity: 0.6;
   stroke-width: 1;
 }
@@ -76,7 +76,7 @@
 }
 
 .button:focus-visible {
-  outline: 2px solid var(--color-coral);
+  outline: 2px solid var(--color-ultramarine);
   outline-offset: 1px;
 }
 
@@ -95,10 +95,14 @@
   color: var(--color-bone);
 }
 
+/* Stop numeral and start time, in the same voice as the time row on the
+   cards (Nunito at body size, semibold) and in bone, so the label under the
+   glass reads as the card's own line rather than as an instrument. */
 .labelMeta {
-  font-size: var(--text-micro);
-  letter-spacing: 0.14em;
-  color: var(--color-coral);
+  font-size: var(--text-body);
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--color-bone);
 }
 
 .labelName {

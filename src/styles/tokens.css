@@ -1,7 +1,8 @@
 /*
  * Design tokens, mirrored from the Paper file. Colors are named after objects
- * in the water column, not abstractly. Coral is HackIllinois' own logo color
- * and a real reef object, so brand and theme are the same decision.
+ * in the water column, not abstractly. The accent was coral, HackIllinois' own
+ * logo color, until 2026-09-16, when Aslan swapped it for a dark blue.
+ * Ultramarine is the pigment named for the sea, so the name keeps the rule.
  */
 :root {
   /* Water, surface to trench */
@@ -13,8 +14,12 @@
   --color-trench: #000305;
 
   /* Accents */
-  --color-coral: #f0553c;
+  --color-ultramarine: #1b3d8a;
   --color-biolum: #7ff2d0;
+  /* The one thing on the page that is not water: the sub's hardware. Allowed on
+     the three ballast handwheels only, never beside the accent. See
+     docs/plans/2026-09-16-ballast-valve-day-selector.md, decision 4. */
+  --color-brass: #cfa554;
 
   /* Text */
   --color-bone: #e8edef;
@@ -35,8 +40,7 @@
   --text-label: 13px;
   --text-body: 14px;
   --text-title: 19px;
-  --text-zone: 28px;
-  --text-day: 76px;
+  --text-hero: 84px;
 
   /* Layout */
   --gutter: 72px;

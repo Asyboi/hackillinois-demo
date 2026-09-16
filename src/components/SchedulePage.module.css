@@ -7,7 +7,6 @@
      to flip to ink at the surface; that was dropped so the chrome reads the
      same on every card. */
   --chrome-fg: var(--color-bone);
-  --chrome-fg-inverse: var(--color-ink);
 }
 
 .body {
@@ -16,6 +15,10 @@
   flex: 1;
   min-height: 0;
   display: flex;
+  /* Both columns are fixed width. Any viewport wider than the 1440 design
+     puts the slack between them, so the cockpit's right edge stays on the
+     gutter, flush with the SUN valve above it. */
+  justify-content: space-between;
   gap: var(--column-gap);
   padding: 22px var(--gutter) 32px;
 }

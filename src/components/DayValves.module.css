@@ -1,0 +1,72 @@
+/* As wide as the cockpit below it, with the wheels clustered at its center,
+   so the manifold's midline is the panel's midline. The wheels do not reach
+   the panel's edges: at a fixed gap they read as one cluster. The hero
+   aligns this box with the zone name on their last baselines, so the plates
+   share the headline's baseline and no padding is needed to fake it. */
+.manifold {
+  --wheel: 76px;
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  width: var(--panel-width);
+}
+
+/* The button is exactly the wheel's width so their edges coincide; the plate
+   underneath centers on it and may be wider. */
+.valve {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: var(--wheel);
+  border-radius: 8px;
+}
+
+.valve:focus-visible {
+  outline: 2px solid var(--color-ultramarine);
+  outline-offset: 4px;
+}
+
+/* Dimmed while the valve is shut. Rotation is the open/closed state, so the
+   turn uses the site's 600ms (depth bar, compass needle), and the global
+   reduced-motion rule snaps it to a jump. The brass is baked into the image
+   now, so --color-brass is no longer read here. */
+.wheel {
+  display: block;
+  width: var(--wheel);
+  height: var(--wheel);
+  opacity: 0.55;
+  transform: rotate(0);
+  transform-origin: center;
+  transition:
+    transform 600ms ease,
+    opacity 300ms ease;
+}
+
+.valve:hover .wheel {
+  opacity: 0.85;
+}
+
+/* Open turns counterclockwise, as real valves do. */
+.valve[data-active='true'] .wheel {
+  opacity: 1;
+  transform: rotate(-90deg);
+}
+
+/* "FRI 2/27", stamped in the hero's voice: Nunito at the heaviest
+   weight, uppercase. Sized to sit under a 76px wheel without the three plates
+   crowding each other across the 48px gaps. */
+.plate {
+  white-space: nowrap;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 22px;
+  letter-spacing: 0.02em;
+  opacity: 0.7;
+  transition: opacity 300ms ease;
+}
+
+.valve:hover .plate,
+.valve[data-active='true'] .plate {
+  opacity: 1;
+}

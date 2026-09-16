@@ -1,7 +1,5 @@
-import { useCallback, useImperativeHandle, useLayoutEffect, useMemo, useRef, type Ref } from 'react'
+import { useCallback, useImperativeHandle, useLayoutEffect, useRef, type Ref } from 'react'
 import type { HackEvent } from '../api/types'
-import { formatMeters, formatTime } from '../lib/format'
-import { SEAFLOOR_METERS, ZONES, zoneRuns } from '../lib/zones'
 import { EventCard } from './EventCard'
 import styles from './EventList.module.css'
 
@@ -20,11 +18,8 @@ export interface EventListHandle {
 interface EventListProps {
   events: HackEvent[]
   activeId: string | null
-  dayLabel: string
-  nextDayLabel: string
   onReadingChange: (eventId: string) => void
   onHoverChange: (eventId: string | null) => void
-  onSurface: () => void
   ref?: Ref<EventListHandle>
 }
 
@@ -32,6 +27,10 @@ interface EventListProps {
  * The only thing on the page that scrolls. Reports which card is at the
  * reading line as the user scrolls, and which card is hovered. It does not
  * decide which of the two wins; the page does.
+ *
+ * The list is one unbroken run of cards. It carries no zone headers: the hero
+ * above it names the zone of the active card, so the moment you cross into
+ * twilight is announced there, on the page, rather than inside the scroller.
  *
  * Exposes one imperative method, scrollToEvent, for the cockpit's course
  * plot. An imperative handle rather than a "scrollToEventId" prop because
@@ -41,18 +40,13 @@ interface EventListProps {
 export function EventList({
   events,
   activeId,
-  dayLabel,
-  nextDayLabel,
   onReadingChange,
   onHoverChange,
-  onSurface,
   ref,
 }: EventListProps) {
   const scrollerRef = useRef<HTMLDivElement>(null)
   const cardNodes = useRef(new Map<string, HTMLLIElement>())
   const pendingFrame = useRef(0)
-
-  const runs = useMemo(() => zoneRuns(events), [events])
 
   const measure = useCallback(() => {
     const scroller = scrollerRef.current
@@ -100,57 +94,21 @@ export function EventList({
 
   return (
     <div ref={scrollerRef} className={styles.scroller} onScroll={handleScroll}>
-      {runs.map((run) => {
-        const first = run.events[0]
-        const last = run.events[run.events.length - 1]
-        return (
-          // Each zone is its own section so its sticky header is confined to
-          // it and gets pushed out by the next zone instead of stacking up.
-          <section key={first.eventId} className={styles.zone}>
-            <header className={styles.zoneHeader}>
-              <span className={`mono label ${styles.depth}`}>{ZONES[run.zone].depthLabel}</span>
-              <h2 className={styles.zoneName}>{ZONES[run.zone].label}</h2>
-              <span className={`mono label ${styles.range}`}>
-                {first === last
-                  ? formatTime(first.startTime)
-                  : `${formatTime(first.startTime)} - ${formatTime(last.startTime)}`}
-                {' · '}
-                {run.events.length} {run.events.length === 1 ? 'stop' : 'stops'}
-              </span>
-            </header>
-            <ol className={styles.cards}>
-              {run.events.map((event) => (
-                <EventCard
-                  key={event.eventId}
-                  ref={registerCard(event.eventId)}
-                  event={event}
-                  active={event.eventId === activeId}
-                  onHoverChange={onHoverChange}
-                />
-              ))}
-            </ol>
-          </section>
-        )
-      })}
+      <ol className={styles.cards}>
+        {events.map((event) => (
+          <EventCard
+            key={event.eventId}
+            ref={registerCard(event.eventId)}
+            event={event}
+            active={event.eventId === activeId}
+            onHoverChange={onHoverChange}
+          />
+        ))}
+      </ol>
 
-      <footer className={styles.seafloor}>
-        <p className={`mono label ${styles.seafloorMeta}`}>
-          {formatMeters(SEAFLOOR_METERS)} · End of {dayLabel}
-        </p>
-        <h2 className={styles.seafloorTitle}>You have reached the bottom.</h2>
-        <button className={styles.surface} onClick={onSurface}>
-          Surface for {nextDayLabel}
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path
-              d="M8 13 L8 3 M3 8 L8 3 L13 8"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-      </footer>
+      {/* Empty water below the last card. It carries no content; its height
+          is what lets the final cards reach the reading line, see the CSS. */}
+      <div className={styles.tail} aria-hidden="true" />
     </div>
   )
 }

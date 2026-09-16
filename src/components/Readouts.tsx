@@ -1,34 +1,35 @@
 import type { ReactNode } from 'react'
 import { useTweenedNumber } from '../hooks/useTweenedNumber'
 import type { Heading } from '../lib/bearing'
-import { formatDistance, toRoman } from '../lib/format'
-import type { ZoneKey } from '../lib/zones'
+import { formatDistance, formatRange, formatTime, toRoman } from '../lib/format'
+import { ZONES, type ZoneKey, type ZoneRun } from '../lib/zones'
 import styles from './Readouts.module.css'
 
 interface ReadoutsProps {
   stopIndex: number
   stopCount: number
   zone: ZoneKey
+  /** The active event's run of same-zone neighbours. Null with no events. */
+  run: ZoneRun | null
   /** This stop's depth on the day's meter, in metres. See stopDepthsMeters. */
   depthMeters: number
   /** The deepest stop of the day: the meter's full-scale reading. */
   maxDepthMeters: number
   heading: Heading
-  concurrent: number
 }
 
 /**
- * The instrument cluster under the porthole. Five rows, label left and value
+ * The instrument cluster under the porthole. Four rows, label left and value
  * right, every value a pure function of the active event.
  */
 export function Readouts({
   stopIndex,
   stopCount,
   zone,
+  run,
   depthMeters,
   maxDepthMeters,
   heading,
-  concurrent,
 }: ReadoutsProps) {
   return (
     <dl className={styles.readouts}>
@@ -38,8 +39,8 @@ export function Readouts({
       <Row label="Depth">
         <DepthMeter meters={depthMeters} maxMeters={maxDepthMeters} />
       </Row>
-      <Row label="Zone">
-        <span className="label">{zone}</span>
+      <Row label="Zone" stacked>
+        <ZoneReading zone={zone} run={run} />
       </Row>
       <Row label="Heading">
         <Compass heading={heading} />
@@ -49,19 +50,55 @@ export function Readouts({
           `${Math.round(heading.degrees)}° · ${formatDistance(heading.meters)}`
         )}
       </Row>
-      <Row label="Sonar">
-        {concurrent === 0 ? 'alone' : `${concurrent} ${concurrent === 1 ? 'event' : 'events'}`}
-      </Row>
     </dl>
   )
 }
 
-function Row({ label, children }: { label: string; children: ReactNode }) {
+/**
+ * One instrument row. A stacked row lays its value out as lines, right
+ * aligned, with the term sitting on the first line instead of centred on
+ * the block.
+ */
+function Row({
+  label,
+  stacked = false,
+  children,
+}: {
+  label: string
+  stacked?: boolean
+  children: ReactNode
+}) {
   return (
-    <div className={styles.row}>
+    <div className={stacked ? `${styles.row} ${styles.stacked}` : styles.row}>
       <dt className={`mono label ${styles.term}`}>{label}</dt>
       <dd className={`mono ${styles.value}`}>{children}</dd>
     </div>
+  )
+}
+
+/**
+ * The zone's name on one line and, beneath it, the real depth where the zone
+ * begins and the clock span of the active event's run through it: the three
+ * facts the list's zone headers used to carry. The second line is set
+ * smaller so the name stays the reading.
+ */
+function ZoneReading({ zone, run }: { zone: ZoneKey; run: ZoneRun | null }) {
+  const first = run?.events[0]
+  const last = run?.events[run.events.length - 1]
+  return (
+    <>
+      <span className="label">{ZONES[zone].name}</span>
+      <span className={styles.zoneDetail}>
+        <span>{ZONES[zone].depthLabel}</span>
+        {first && last && (
+          <span>
+            {first === last
+              ? formatTime(first.startTime)
+              : formatRange(first.startTime, last.startTime)}
+          </span>
+        )}
+      </span>
+    </>
   )
 }
 

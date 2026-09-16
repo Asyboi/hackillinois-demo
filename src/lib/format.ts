@@ -16,6 +16,17 @@ export function formatRange(startSeconds: number, endSeconds: number): string {
   return `${formatTime(startSeconds)} - ${formatTime(endSeconds)}`
 }
 
+const monthDayFormatter = new Intl.DateTimeFormat('en-US', {
+  timeZone: EVENT_TIME_ZONE,
+  month: 'numeric',
+  day: 'numeric',
+})
+
+/** "2/27": the calendar date in the event time zone, no padding. */
+export function formatMonthDay(unixSeconds: number): string {
+  return monthDayFormatter.format(new Date(unixSeconds * 1000))
+}
+
 /** Whole minutes between two Unix-seconds timestamps. */
 export function durationMinutes(startSeconds: number, endSeconds: number): number {
   return Math.max(0, Math.round((endSeconds - startSeconds) / 60))

@@ -11,16 +11,20 @@ export type ZoneKey = 'sunlit' | 'twilight' | 'midnight' | 'abyssal'
 
 export interface ZoneInfo {
   key: ZoneKey
+  /** "Sunlit": the bare name, for the cockpit's ZONE readout. */
+  name: string
+  /** "Sunlit Zone": the hero's headline while an event in this zone is active. */
   label: string
   /** Real ocean depth where this zone begins. */
   depthMeters: number
-  /** The same, formatted for the zone headers. */
+  /** The same, formatted for the cockpit's ZONE readout. */
   depthLabel: string
 }
 
-const zone = (key: ZoneKey, label: string, depthMeters: number): ZoneInfo => ({
+const zone = (key: ZoneKey, name: string, depthMeters: number): ZoneInfo => ({
   key,
-  label,
+  name,
+  label: `${name} Zone`,
   depthMeters,
   depthLabel: formatMeters(depthMeters),
 })
@@ -28,10 +32,10 @@ const zone = (key: ZoneKey, label: string, depthMeters: number): ZoneInfo => ({
 export const ZONE_ORDER: ZoneKey[] = ['sunlit', 'twilight', 'midnight', 'abyssal']
 
 export const ZONES: Record<ZoneKey, ZoneInfo> = {
-  sunlit: zone('sunlit', 'Sunlit Zone', 0),
-  twilight: zone('twilight', 'Twilight Zone', 200),
-  midnight: zone('midnight', 'Midnight Zone', 1_000),
-  abyssal: zone('abyssal', 'Abyssal Zone', 4_000),
+  sunlit: zone('sunlit', 'Sunlit', 0),
+  twilight: zone('twilight', 'Twilight', 200),
+  midnight: zone('midnight', 'Midnight', 1_000),
+  abyssal: zone('abyssal', 'Abyssal', 4_000),
 }
 
 /** Where a day ends: the seafloor below the abyssal zone. */
@@ -52,6 +56,12 @@ export function zoneRuns(events: HackEvent[]): ZoneRun[] {
     else runs.push({ zone, events: [event] })
   }
   return runs
+}
+
+/** The run that holds this event, or null if no run does. */
+export function runContaining(runs: ZoneRun[], eventId: string | null): ZoneRun | null {
+  if (eventId === null) return null
+  return runs.find((run) => run.events.some((e) => e.eventId === eventId)) ?? null
 }
 
 const minutes = (h: number, m = 0) => h * 60 + m
