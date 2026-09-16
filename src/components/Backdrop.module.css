@@ -18,6 +18,47 @@
   mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.55) 50%, transparent 88%);
 }
 
+/* Mostly outline, so a bubble passing behind a card draws a ring rather than
+   a blot under its text. The faint fill and heavier stroke keep them visible
+   on the bright sunlit water, where a thin white ring disappeared. */
+.bubbles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  fill: rgba(255, 255, 255, 0.12);
+  stroke: #ffffff;
+  stroke-width: 2;
+  opacity: 0.6;
+}
+
+/* The wreck and the rock fade as one picture: the transition lives here and
+   nowhere on the children, so the browser composites the pair and then
+   applies the opacity, and the rock keeps burying the keel at every step of
+   the fade. Covers the stage so the children keep their viewport anchoring. */
+.seabed {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 900ms ease;
+  will-change: opacity;
+}
+
+/* Under the event list, left-aligned with it. The keel sits 70px up from the
+   viewport bottom, below the rock's ridge line (roughly 94 to 122px up), so
+   the seafloor drawn over it buries the hull's flat base. The image is twice
+   this width for high-density screens. */
+.wreck {
+  position: absolute;
+  left: calc(var(--gutter) + 80px);
+  bottom: 70px;
+  width: 560px;
+  height: auto;
+  display: block;
+  user-select: none;
+}
+
 .seafloor {
   position: absolute;
   left: 0;
@@ -26,6 +67,4 @@
   width: 100%;
   height: 140px;
   display: block;
-  transition: opacity 900ms ease;
-  will-change: opacity;
 }

@@ -15,8 +15,8 @@ interface BackdropProps {
  * The full-viewport water behind everything. Deliberately quiet: no marine
  * life swims here, because 780px of card text sits on top of it. The
  * creatures live inside the cockpit's porthole instead. What the backdrop
- * does carry is light and ground: sunrays near the surface, rock at the
- * bottom.
+ * does carry is light, air and ground: sunrays near the surface, bubbles in
+ * every zone, rock at the bottom.
  */
 export function Backdrop({ depth, zone }: BackdropProps) {
   // The rays are what the twilight water covers. Their strength is the
@@ -27,7 +27,27 @@ export function Backdrop({ depth, zone }: BackdropProps) {
     <div className={styles.stage} aria-hidden="true">
       <Water depth={depth} />
       <Sunrays strength={daylight} />
-      <Seafloor visible={zone === 'abyssal'} />
+      <Bubbles />
+      <Seabed visible={zone === 'abyssal'} />
+    </div>
+  )
+}
+
+/**
+ * The bottom of the sea: the wreck and the rock it lies in, faded in and out
+ * as one picture. They used to fade separately, and mid-fade the hull showed
+ * through the half-transparent rock, so the ship registered first and the
+ * floor arrived after it as a second, unrelated thing. Group opacity
+ * composites the two first and fades the result, so at every instant the
+ * rock buries the keel and the scene is one object at some opacity.
+ */
+function Seabed({ visible }: { visible: boolean }) {
+  return (
+    <div className={styles.seabed} style={{ opacity: visible ? 1 : 0 }}>
+      {/* Before the rock in the markup, so the rock paints over its keel and the
+          wreck reads as sunk into the floor rather than resting on top of it. */}
+      <Wreck />
+      <Seafloor />
     </div>
   )
 }
@@ -69,18 +89,78 @@ const RAYS = [
 ]
 
 /**
- * Gray rock along the bottom of the viewport. Like the creatures, it snaps
- * at the zone threshold: only the abyssal zone has a floor. The water layer
- * for the abyssal zone starts fading in before midnight, so it cannot drive
- * this, or the rock would show faintly in the midnight zone. The path is
- * drawn in a 1440-wide box and stretched to the viewport, so the ridge line
- * keeps its proportions at any width.
+ * Bubbles rising through the whole water column, the same in every zone: air
+ * does not care how deep you are. Drawn in the same 1440 x 900 box as the
+ * rays. Each rises from below the bottom edge to above the top on its own
+ * clock and wobbles sideways, and the wobble ends where it started so the
+ * loop has no jump. Rendered before the seabed so the rock covers their start.
+ * Delays are negative so each bubble starts partway up: the page loads with
+ * bubbles already spread through the water instead of empty for seconds.
  */
-function Seafloor({ visible }: { visible: boolean }) {
+function Bubbles() {
+  return (
+    <svg
+      className={styles.bubbles}
+      viewBox="0 0 1440 900"
+      preserveAspectRatio="xMidYMin slice"
+      aria-hidden="true"
+    >
+      {BUBBLES.map(({ x, r, duration, delay }) => (
+        <Drift
+          key={x}
+          y={[0, -1000]}
+          x={[0, 10, -8, 0]}
+          duration={duration}
+          delay={delay}
+          repeatType="loop"
+          ease="linear"
+        >
+          <circle cx={x} cy={940} r={r} />
+        </Drift>
+      ))}
+    </svg>
+  )
+}
+
+const BUBBLES = [
+  { x: 40, r: 6, duration: 18, delay: 0 },
+  { x: 58, r: 3, duration: 15, delay: -6 },
+  { x: 190, r: 4, duration: 21, delay: -3 },
+  { x: 330, r: 7, duration: 24, delay: -9 },
+  { x: 470, r: 3, duration: 17, delay: -12 },
+  { x: 610, r: 5, duration: 22, delay: -1 },
+  { x: 760, r: 4, duration: 19, delay: -7 },
+  { x: 850, r: 8, duration: 26, delay: -4 },
+  { x: 880, r: 3, duration: 16, delay: -10 },
+  { x: 1010, r: 5, duration: 20, delay: -2 },
+  { x: 1150, r: 6, duration: 23, delay: -8 },
+  { x: 1290, r: 3, duration: 18, delay: -5 },
+  { x: 1310, r: 5, duration: 21, delay: -11 },
+  { x: 1400, r: 4, duration: 25, delay: -3.5 },
+]
+
+/**
+ * A sunken ship on the seafloor, under the event list. It sits in the empty
+ * water below the day's last card, which is the only place the backdrop is
+ * not covered by text. A raster image, not SVG: an illustrated wreck is far
+ * more detail than the hand-drawn paths elsewhere in the backdrop.
+ */
+function Wreck() {
+  return <img className={styles.wreck} src="/wreck.png" alt="" draggable={false} />
+}
+
+/**
+ * Gray rock along the bottom of the viewport. Like the creatures, the seabed
+ * snaps at the zone threshold: only the abyssal zone has a floor. The water
+ * layer for the abyssal zone starts fading in before midnight, so it cannot
+ * drive this, or the rock would show faintly in the midnight zone. The path
+ * is drawn in a 1440-wide box and stretched to the viewport, so the ridge
+ * line keeps its proportions at any width.
+ */
+function Seafloor() {
   return (
     <svg
       className={styles.seafloor}
-      style={{ opacity: visible ? 1 : 0 }}
       viewBox="0 0 1440 140"
       preserveAspectRatio="none"
       aria-hidden="true"
