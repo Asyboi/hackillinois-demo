@@ -1,7 +1,7 @@
 import { useCallback, useImperativeHandle, useLayoutEffect, useMemo, useRef, type Ref } from 'react'
 import type { HackEvent } from '../api/types'
-import { formatTime } from '../lib/format'
-import { ZONES, zoneForTime, type ZoneKey } from '../lib/zones'
+import { formatMeters, formatTime } from '../lib/format'
+import { SEAFLOOR_METERS, ZONES, zoneRuns } from '../lib/zones'
 import { EventCard } from './EventCard'
 import styles from './EventList.module.css'
 
@@ -28,23 +28,6 @@ interface EventListProps {
   ref?: Ref<EventListHandle>
 }
 
-/** A run of consecutive events in the same zone, with their 1-based stop numbers. */
-interface ZoneRun {
-  zone: ZoneKey
-  stops: { event: HackEvent; stop: number }[]
-}
-
-function groupIntoZoneRuns(events: HackEvent[]): ZoneRun[] {
-  const runs: ZoneRun[] = []
-  events.forEach((event, i) => {
-    const zone = zoneForTime(event.startTime)
-    const last = runs[runs.length - 1]
-    if (last && last.zone === zone) last.stops.push({ event, stop: i + 1 })
-    else runs.push({ zone, stops: [{ event, stop: i + 1 }] })
-  })
-  return runs
-}
-
 /**
  * The only thing on the page that scrolls. Reports which card is at the
  * reading line as the user scrolls, and which card is hovered. It does not
@@ -69,7 +52,7 @@ export function EventList({
   const cardNodes = useRef(new Map<string, HTMLLIElement>())
   const pendingFrame = useRef(0)
 
-  const runs = useMemo(() => groupIntoZoneRuns(events), [events])
+  const runs = useMemo(() => zoneRuns(events), [events])
 
   const measure = useCallback(() => {
     const scroller = scrollerRef.current
@@ -118,8 +101,8 @@ export function EventList({
   return (
     <div ref={scrollerRef} className={styles.scroller} onScroll={handleScroll}>
       {runs.map((run) => {
-        const first = run.stops[0].event
-        const last = run.stops[run.stops.length - 1].event
+        const first = run.events[0]
+        const last = run.events[run.events.length - 1]
         return (
           // Each zone is its own section so its sticky header is confined to
           // it and gets pushed out by the next zone instead of stacking up.
@@ -132,11 +115,11 @@ export function EventList({
                   ? formatTime(first.startTime)
                   : `${formatTime(first.startTime)} - ${formatTime(last.startTime)}`}
                 {' · '}
-                {run.stops.length} {run.stops.length === 1 ? 'stop' : 'stops'}
+                {run.events.length} {run.events.length === 1 ? 'stop' : 'stops'}
               </span>
             </header>
             <ol className={styles.cards}>
-              {run.stops.map(({ event }) => (
+              {run.events.map((event) => (
                 <EventCard
                   key={event.eventId}
                   ref={registerCard(event.eventId)}
@@ -151,7 +134,9 @@ export function EventList({
       })}
 
       <footer className={styles.seafloor}>
-        <p className={`mono label ${styles.seafloorMeta}`}>6,000 m · End of {dayLabel}</p>
+        <p className={`mono label ${styles.seafloorMeta}`}>
+          {formatMeters(SEAFLOOR_METERS)} · End of {dayLabel}
+        </p>
         <h2 className={styles.seafloorTitle}>You have reached the bottom.</h2>
         <button className={styles.surface} onClick={onSurface}>
           Surface for {nextDayLabel}

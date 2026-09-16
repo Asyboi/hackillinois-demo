@@ -1,6 +1,7 @@
 import type { HackEvent } from '../api/types'
 import { headingFor, type Coordinate } from '../lib/bearing'
 import { concurrentWith } from '../lib/concurrency'
+import { stopDepthsMeters } from '../lib/soundings'
 import type { ZoneKey } from '../lib/zones'
 import styles from './Cockpit.module.css'
 import { CoursePlot } from './CoursePlot'
@@ -40,6 +41,7 @@ export function Cockpit({
   onSelectStop,
 }: CockpitProps) {
   const active = events[activeIndex] ?? null
+  const depths = stopDepthsMeters(events)
 
   return (
     <aside className={styles.cockpit} aria-label="Dive instruments">
@@ -55,7 +57,8 @@ export function Cockpit({
         stopIndex={activeIndex}
         stopCount={events.length}
         zone={zone}
-        depth={depth}
+        depthMeters={depths[activeIndex] ?? 0}
+        maxDepthMeters={Math.max(0, ...depths)}
         heading={active ? headingFor(active, home) : { kind: 'on-station' }}
         concurrent={active ? concurrentWith(active, events) : 0}
       />

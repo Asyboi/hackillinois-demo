@@ -1,4 +1,6 @@
+import type { HackEvent } from '../api/types'
 import { minutesOfDay } from './clock'
+import { formatMeters } from './format'
 
 /**
  * The four ocean light zones, keyed to the clock. Sunset in Urbana on Feb 27
@@ -10,15 +12,46 @@ export type ZoneKey = 'sunlit' | 'twilight' | 'midnight' | 'abyssal'
 export interface ZoneInfo {
   key: ZoneKey
   label: string
-  /** Real ocean depth where this zone begins, used as a label only. */
+  /** Real ocean depth where this zone begins. */
+  depthMeters: number
+  /** The same, formatted for the zone headers. */
   depthLabel: string
 }
 
+const zone = (key: ZoneKey, label: string, depthMeters: number): ZoneInfo => ({
+  key,
+  label,
+  depthMeters,
+  depthLabel: formatMeters(depthMeters),
+})
+
+export const ZONE_ORDER: ZoneKey[] = ['sunlit', 'twilight', 'midnight', 'abyssal']
+
 export const ZONES: Record<ZoneKey, ZoneInfo> = {
-  sunlit: { key: 'sunlit', label: 'Sunlit Zone', depthLabel: '0 m' },
-  twilight: { key: 'twilight', label: 'Twilight Zone', depthLabel: '200 m' },
-  midnight: { key: 'midnight', label: 'Midnight Zone', depthLabel: '1,000 m' },
-  abyssal: { key: 'abyssal', label: 'Abyssal Zone', depthLabel: '4,000 m' },
+  sunlit: zone('sunlit', 'Sunlit Zone', 0),
+  twilight: zone('twilight', 'Twilight Zone', 200),
+  midnight: zone('midnight', 'Midnight Zone', 1_000),
+  abyssal: zone('abyssal', 'Abyssal Zone', 4_000),
+}
+
+/** Where a day ends: the seafloor below the abyssal zone. */
+export const SEAFLOOR_METERS = 6_000
+
+/** A run of consecutive events in the same zone. */
+export interface ZoneRun {
+  zone: ZoneKey
+  events: HackEvent[]
+}
+
+export function zoneRuns(events: HackEvent[]): ZoneRun[] {
+  const runs: ZoneRun[] = []
+  for (const event of events) {
+    const zone = zoneForTime(event.startTime)
+    const last = runs[runs.length - 1]
+    if (last && last.zone === zone) last.events.push(event)
+    else runs.push({ zone, events: [event] })
+  }
+  return runs
 }
 
 const minutes = (h: number, m = 0) => h * 60 + m

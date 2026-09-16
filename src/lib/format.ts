@@ -21,6 +21,11 @@ export function durationMinutes(startSeconds: number, endSeconds: number): numbe
   return Math.max(0, Math.round((endSeconds - startSeconds) / 60))
 }
 
+/** "4,000 m": a depth, with thousands separators. */
+export function formatMeters(meters: number): string {
+  return `${Math.round(meters).toLocaleString('en-US')} m`
+}
+
 /** "390 m" or "1.5 km", the precision a walk between buildings deserves. */
 export function formatDistance(meters: number): string {
   if (meters >= 1000) return `${(meters / 1000).toFixed(1)} km`

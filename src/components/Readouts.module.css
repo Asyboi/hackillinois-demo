@@ -40,11 +40,21 @@
   overflow: hidden;
 }
 
+/* No CSS transition: the width follows the tweened number, which already glides. */
 .fill {
   display: block;
   height: 100%;
   background: var(--color-biolum);
-  transition: width 600ms ease;
+}
+
+/* Wide enough for "6,000/6,000 m" (13 glyphs) in the mono face, so the bar
+   never moves. ch measures the bare glyph advance, so the letter-spacing the
+   .mono utility adds has to be counted separately. */
+.depthValue {
+  display: inline-block;
+  min-width: calc(13ch + 13 * 0.1em);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .compass {
