@@ -52,6 +52,39 @@
   stroke-width: 1;
 }
 
+/* The active mark's pulse: a stroke-only ring that starts just outside the
+   dot, swells past the static ring and fades out, every two seconds. Scaled
+   about its own center (transform-box), not the SVG origin. Transform and
+   opacity only, like every other animation on the page. */
+.ping {
+  fill: none;
+  stroke: var(--color-ultramarine);
+  stroke-width: 1.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ping 2000ms ease-out infinite;
+}
+
+@keyframes ping {
+  from {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* The global reduced-motion rule shortens animations to nothing, which would
+   leave a repeating one flickering at a random phase. The ping is a flourish
+   on top of the static ring, so under reduced motion it is simply not drawn. */
+@media (prefers-reduced-motion: reduce) {
+  .ping {
+    display: none;
+  }
+}
+
 .stops {
   list-style: none;
   margin: 0;

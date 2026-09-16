@@ -106,6 +106,9 @@ function StopMark({ stop, activeIndex }: { stop: CourseStop; activeIndex: number
   if (stop.index === activeIndex) {
     return (
       <g>
+        {/* A sonar ping: a ring that swells out of the mark and fades, on
+            repeat. Mounted with the active mark, so it restarts on arrival. */}
+        <circle className={styles.ping} cx={stop.x} cy={stop.y} r={11} />
         <circle className={styles.ring} cx={stop.x} cy={stop.y} r={11} />
         <circle className={styles.markActive} cx={stop.x} cy={stop.y} r={5.5} />
       </g>
