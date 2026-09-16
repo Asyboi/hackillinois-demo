@@ -28,26 +28,28 @@
   stroke-dasharray: 1.5 5;
 }
 
+/* Stop dots are opaque so the course line never shows through their middle.
+   Silt stands in for the half-transparent bone the passed dots used to be. */
 .markPassed {
-  fill: var(--color-bone);
-  fill-opacity: 0.45;
+  fill: var(--color-silt);
 }
 
 .markAhead {
   fill: var(--color-abyss);
-  fill-opacity: 0.5;
   stroke: var(--color-biolum);
   stroke-width: 1;
 }
 
+/* The active stop is bone, like the active card: the accent's dark blue
+   vanished against the deep water. Changed 2026-09-16 at Aslan's call. */
 .markActive {
-  fill: var(--color-ultramarine);
+  fill: var(--color-bone);
 }
 
 .ring {
-  fill: var(--color-ultramarine);
+  fill: var(--color-bone);
   fill-opacity: 0.18;
-  stroke: var(--color-ultramarine);
+  stroke: var(--color-bone);
   stroke-opacity: 0.6;
   stroke-width: 1;
 }
@@ -58,7 +60,7 @@
    opacity only, like every other animation on the page. */
 .ping {
   fill: none;
-  stroke: var(--color-ultramarine);
+  stroke: var(--color-bone);
   stroke-width: 1.5;
   transform-box: fill-box;
   transform-origin: center;

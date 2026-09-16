@@ -12,9 +12,12 @@
     background-color 200ms ease;
 }
 
+/* The active card lights up in bone, not the accent: a dark blue border
+   vanished against the midnight and abyssal water, and bone reads on every
+   zone. Changed 2026-09-16 at Aslan's call. */
 .card[data-active='true'] {
-  border-color: var(--color-ultramarine);
-  background: rgba(27, 61, 138, 0.1);
+  border-color: var(--color-bone);
+  background: rgba(232, 237, 239, 0.08);
 }
 
 .head {

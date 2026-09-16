@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useId, useLayoutEffect, useRef, useState } from 'react'
 import type { HackEvent } from '../api/types'
 import { plotCourse, type CourseStop } from '../lib/course'
 import { formatTime, toRoman } from '../lib/format'
@@ -83,9 +83,13 @@ export function CoursePlot({ events, activeIndex, onHoverChange, onSelectStop }:
 
 /**
  * The line joining the stops. Solid behind the active stop, dotted ahead of
- * it, so the plot doubles as the list's progress indicator.
+ * it, so the plot doubles as the list's progress indicator. The other dots
+ * are opaque and cover the line themselves; the active stop's ring is see
+ * through, so the line is masked out under it instead.
  */
 function CourseLine({ stops, activeIndex }: { stops: CourseStop[]; activeIndex: number }) {
+  const maskId = useId()
+  const active = stops[activeIndex]
   const segment = (from: CourseStop, to: CourseStop) => `M${from.x} ${from.y} L${to.x} ${to.y}`
   let passed = ''
   let ahead = ''
@@ -96,11 +100,19 @@ function CourseLine({ stops, activeIndex }: { stops: CourseStop[]; activeIndex: 
   }
   return (
     <>
-      <path className={styles.linePassed} d={passed} />
-      <path className={styles.lineAhead} d={ahead} />
+      <mask id={maskId} maskUnits="userSpaceOnUse">
+        <rect width="100%" height="100%" fill="#fff" />
+        {active && <circle cx={active.x} cy={active.y} r={RING_RADIUS} fill="#000" />}
+      </mask>
+      <g mask={`url(#${maskId})`}>
+        <path className={styles.linePassed} d={passed} />
+        <path className={styles.lineAhead} d={ahead} />
+      </g>
     </>
   )
 }
+
+const RING_RADIUS = 11
 
 function StopMark({ stop, activeIndex }: { stop: CourseStop; activeIndex: number }) {
   if (stop.index === activeIndex) {
@@ -108,8 +120,8 @@ function StopMark({ stop, activeIndex }: { stop: CourseStop; activeIndex: number
       <g>
         {/* A sonar ping: a ring that swells out of the mark and fades, on
             repeat. Mounted with the active mark, so it restarts on arrival. */}
-        <circle className={styles.ping} cx={stop.x} cy={stop.y} r={11} />
-        <circle className={styles.ring} cx={stop.x} cy={stop.y} r={11} />
+        <circle className={styles.ping} cx={stop.x} cy={stop.y} r={RING_RADIUS} />
+        <circle className={styles.ring} cx={stop.x} cy={stop.y} r={RING_RADIUS} />
         <circle className={styles.markActive} cx={stop.x} cy={stop.y} r={5.5} />
       </g>
     )
