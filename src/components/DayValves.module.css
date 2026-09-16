@@ -4,10 +4,10 @@
    aligns this box with the zone name on their last baselines, so the plates
    share the headline's baseline and no padding is needed to fake it. */
 .manifold {
-  --wheel: 76px;
+  --wheel: 96px;
   display: flex;
   justify-content: center;
-  gap: 48px;
+  gap: 64px;
   width: var(--panel-width);
 }
 
@@ -54,13 +54,13 @@
 }
 
 /* "FRI 2/27", stamped in the hero's voice: Nunito at the heaviest
-   weight, uppercase. Sized to sit under a 76px wheel without the three plates
-   crowding each other across the 48px gaps. */
+   weight, uppercase. Sized to sit under a 96px wheel without the three plates
+   crowding each other across the 64px gaps. */
 .plate {
   white-space: nowrap;
-  font-size: 18px;
+  font-size: 23px;
   font-weight: 900;
-  line-height: 22px;
+  line-height: 28px;
   letter-spacing: 0.02em;
   opacity: 0.7;
   transition: opacity 300ms ease;
