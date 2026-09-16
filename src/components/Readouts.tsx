@@ -42,7 +42,7 @@ export function Readouts({
       <Row label="Zone" stacked>
         <ZoneReading zone={zone} run={run} />
       </Row>
-      <Row label="Heading">
+      <Row label="Compass">
         <Compass heading={heading} />
         {heading.kind === 'on-station' ? (
           <span className="label">On station</span>
