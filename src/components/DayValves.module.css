@@ -17,7 +17,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 19px;
   width: var(--wheel);
   border-radius: 8px;
 }
@@ -30,8 +30,12 @@
 /* Dimmed while the valve is shut. Rotation is the open/closed state, so the
    turn uses the site's 600ms (depth bar, compass needle), and the global
    reduced-motion rule snaps it to a jump. The brass is baked into the image
-   now, so --color-brass is no longer read here. */
+   now, so --color-brass is no longer read here. The wheel is nudged 3px down
+   by eye with a relative offset, not a transform, since the transform is the
+   turn. */
 .wheel {
+  position: relative;
+  top: 3px;
   display: block;
   width: var(--wheel);
   height: var(--wheel);

@@ -109,7 +109,7 @@ Each valve is one `<button>`:
   color no longer comes from the token; it is in the pixels.)
 - Under it, the plate: day label (Nunito 700, 15px) and count
   (`--font-mono`, `--text-label`, 0.7 opacity), on one line.
-  (Amended later on 2026-09-16: the wheel is 96px, the plate 23px, the gap 64px, and the hero aligns the
+  (Amended later on 2026-09-16: the wheel is 96px, the plate 23px, the gap 64px, 19px between wheel and plate with the wheel nudged 3px down, and the hero aligns the
   headline and the manifold on their last baselines instead of their bottom
   edges, so the plate text sits on the same baseline as the zone name. The
   count was already gone by then; the plate reads `FRI 2/27`.)
