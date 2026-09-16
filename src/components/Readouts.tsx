@@ -57,7 +57,8 @@ export function Readouts({
 /**
  * One instrument row. A stacked row lays its value out as lines, right
  * aligned, with the term sitting on the first line instead of centred on
- * the block.
+ * the block. Terms and values are Nunito semibold, the card time row's voice,
+ * not the mono face: the dashboard reads in the same type as the list.
  */
 function Row({
   label,
@@ -70,8 +71,8 @@ function Row({
 }) {
   return (
     <div className={stacked ? `${styles.row} ${styles.stacked}` : styles.row}>
-      <dt className={`mono label ${styles.term}`}>{label}</dt>
-      <dd className={`mono ${styles.value}`}>{children}</dd>
+      <dt className={`label ${styles.term}`}>{label}</dt>
+      <dd className={styles.value}>{children}</dd>
     </div>
   )
 }

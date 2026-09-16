@@ -14,9 +14,12 @@
   gap: 12px;
 }
 
+/* Terms and values share the card time row's face and weight (Nunito 600).
+   The terms stay small, spaced capitals in silt so they read as labels. */
 .term {
   font-size: var(--text-micro);
-  letter-spacing: 0.16em;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   color: var(--color-silt);
 }
 
@@ -26,8 +29,8 @@
   justify-content: flex-end;
   gap: 10px;
   margin: 0;
-  font-size: 14px;
-  letter-spacing: 0.06em;
+  font-size: var(--text-body);
+  font-weight: 600;
   line-height: 22px;
   text-align: right;
 }
@@ -71,12 +74,12 @@
   background: var(--color-biolum);
 }
 
-/* Wide enough for "6,000/6,000 m" (13 glyphs) in the mono face, so the bar
-   never moves. ch measures the bare glyph advance, so the letter-spacing the
-   .mono utility adds has to be counted separately. */
+/* Wide enough for the largest reading, "6,000/6,000 m", so the bar never
+   moves. Measured at 6.7em in Nunito 600; tabular figures keep every digit
+   the same width, so no smaller reading can come out wider. */
 .depthValue {
   display: inline-block;
-  min-width: calc(13ch + 13 * 0.1em);
+  min-width: 6.8em;
   text-align: right;
   font-variant-numeric: tabular-nums;
 }

@@ -42,14 +42,6 @@ a {
   text-decoration: none;
 }
 
-/* Instrument readings: times, depths, chips, stop numerals. Roman numerals stay
-   lowercase, so uppercase is opted into per label rather than baked in here. */
-.mono {
-  font-family: var(--font-mono);
-  font-weight: 500;
-  letter-spacing: 0.1em;
-}
-
 .label {
   text-transform: uppercase;
 }
