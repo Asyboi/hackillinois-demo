@@ -1,0 +1,77 @@
+.readouts {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0 10px 2px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.term {
+  font-size: var(--text-micro);
+  letter-spacing: 0.16em;
+  color: var(--color-silt);
+}
+
+.value {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  line-height: 22px;
+  text-align: right;
+}
+
+.bar {
+  width: 72px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(232, 237, 239, 0.14);
+  overflow: hidden;
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  background: var(--color-biolum);
+  transition: width 600ms ease;
+}
+
+.compass {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.dial {
+  fill: none;
+  stroke: currentColor;
+  stroke-opacity: 0.35;
+  stroke-width: 1;
+}
+
+.tick {
+  stroke: currentColor;
+  stroke-opacity: 0.5;
+  stroke-width: 1;
+}
+
+.station {
+  fill: var(--color-coral);
+}
+
+.needle {
+  fill: var(--color-coral);
+  transform-origin: 12px 12px;
+  transition: transform 600ms ease;
+}

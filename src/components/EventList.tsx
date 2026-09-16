@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useMemo, useRef } from 'react'
+import { useCallback, useImperativeHandle, useLayoutEffect, useMemo, useRef, type Ref } from 'react'
 import type { HackEvent } from '../api/types'
 import { formatTime } from '../lib/format'
 import { ZONES, zoneForTime, type ZoneKey } from '../lib/zones'
@@ -11,6 +11,12 @@ import styles from './EventList.module.css'
  */
 const READING_LINE_PX = 80
 
+/** What the cockpit can ask the list to do. */
+export interface EventListHandle {
+  /** Scroll so this event's card lands on the reading line and becomes active. */
+  scrollToEvent(eventId: string): void
+}
+
 interface EventListProps {
   events: HackEvent[]
   activeId: string | null
@@ -19,6 +25,7 @@ interface EventListProps {
   onReadingChange: (eventId: string) => void
   onHoverChange: (eventId: string | null) => void
   onSurface: () => void
+  ref?: Ref<EventListHandle>
 }
 
 /** A run of consecutive events in the same zone, with their 1-based stop numbers. */
@@ -42,6 +49,11 @@ function groupIntoZoneRuns(events: HackEvent[]): ZoneRun[] {
  * The only thing on the page that scrolls. Reports which card is at the
  * reading line as the user scrolls, and which card is hovered. It does not
  * decide which of the two wins; the page does.
+ *
+ * Exposes one imperative method, scrollToEvent, for the cockpit's course
+ * plot. An imperative handle rather than a "scrollToEventId" prop because
+ * clicking the same stop twice has to scroll twice, and a prop would need a
+ * nonce alongside it to re-fire.
  */
 export function EventList({
   events,
@@ -51,6 +63,7 @@ export function EventList({
   onReadingChange,
   onHoverChange,
   onSurface,
+  ref,
 }: EventListProps) {
   const scrollerRef = useRef<HTMLDivElement>(null)
   const cardNodes = useRef(new Map<string, HTMLLIElement>())
@@ -75,6 +88,22 @@ export function EventList({
   useLayoutEffect(() => {
     measure()
   }, [measure])
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      scrollToEvent(eventId) {
+        const scroller = scrollerRef.current
+        const node = cardNodes.current.get(eventId)
+        if (!scroller || !node) return
+        // One extra pixel so the card's top is past the line, not on it,
+        // which is what measure() treats as "crossed". Smoothness comes from
+        // the scroller's CSS scroll-behavior so reduced-motion can turn it off.
+        scroller.scrollTo({ top: node.offsetTop - READING_LINE_PX + 1 })
+      },
+    }),
+    [],
+  )
 
   const handleScroll = () => {
     cancelAnimationFrame(pendingFrame.current)
@@ -107,12 +136,11 @@ export function EventList({
               </span>
             </header>
             <ol className={styles.cards}>
-              {run.stops.map(({ event, stop }) => (
+              {run.stops.map(({ event }) => (
                 <EventCard
                   key={event.eventId}
                   ref={registerCard(event.eventId)}
                   event={event}
-                  stop={stop}
                   active={event.eventId === activeId}
                   onHoverChange={onHoverChange}
                 />

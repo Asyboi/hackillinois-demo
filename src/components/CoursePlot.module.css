@@ -1,0 +1,111 @@
+.plot {
+  position: absolute;
+  inset: 0;
+}
+
+.marks {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.linePassed {
+  fill: none;
+  stroke: var(--color-bone);
+  stroke-opacity: 0.55;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.lineAhead {
+  fill: none;
+  stroke: var(--color-biolum);
+  stroke-opacity: 0.55;
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-dasharray: 1.5 5;
+}
+
+.markPassed {
+  fill: var(--color-bone);
+  fill-opacity: 0.45;
+}
+
+.markAhead {
+  fill: var(--color-abyss);
+  fill-opacity: 0.5;
+  stroke: var(--color-biolum);
+  stroke-width: 1;
+}
+
+.markActive {
+  fill: var(--color-coral);
+}
+
+.ring {
+  fill: var(--color-coral);
+  fill-opacity: 0.18;
+  stroke: var(--color-coral);
+  stroke-opacity: 0.6;
+  stroke-width: 1;
+}
+
+.stops {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.stop {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* The hit target, centred on the mark. Invisible: the SVG draws the mark. */
+.button {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 26px;
+  height: 26px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--color-coral);
+  outline-offset: 1px;
+}
+
+.label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 26px 22px 14px;
+  pointer-events: none;
+  /* A scrim so the label reads over whatever is swimming past. */
+  background: linear-gradient(to top, rgba(6, 28, 42, 0.78) 0%, rgba(6, 28, 42, 0.45) 55%, transparent 100%);
+  color: var(--color-bone);
+}
+
+.labelMeta {
+  font-size: var(--text-micro);
+  letter-spacing: 0.14em;
+  color: var(--color-coral);
+}
+
+.labelName {
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -5,7 +5,9 @@
   flex-shrink: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  /* The Journey Panel is the progress indicator, so the native bar stays hidden. */
+  /* Clicking a stop on the cockpit's course plot scrolls the list here. */
+  scroll-behavior: smooth;
+  /* The cockpit's course plot is the progress indicator, so the native bar stays hidden. */
   scrollbar-width: none;
   /* Soften the bottom edge so the list reads as continuing below the fold. */
   mask-image: linear-gradient(to bottom, black calc(100% - 60px), transparent);
@@ -14,6 +16,12 @@
 
 .scroller::-webkit-scrollbar {
   display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroller {
+    scroll-behavior: auto;
+  }
 }
 
 .zone {
@@ -35,7 +43,10 @@
   padding: 10px 20px 12px;
   border-radius: 10px;
   border-bottom: 1px solid rgba(232, 237, 239, 0.18);
-  background: rgba(6, 28, 42, 0.38);
+  /* Opaque enough to hide the cards scrolling under it on its own. The blur
+     below is an enhancement only: the scroller's mask-image disables
+     backdrop-filter in Chromium, so it cannot be relied on. */
+  background: rgba(6, 28, 42, 0.94);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   color: var(--color-bone);

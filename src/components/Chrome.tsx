@@ -8,8 +8,8 @@ interface ChromeProps {
 }
 
 /**
- * Nav and hero. Never scrolls. Its text color comes from the page's current
- * zone (ink at the surface, bone below) through the --chrome-fg variable.
+ * Nav and hero. Never scrolls. Its text color is bone in every zone, set
+ * once on the page through the --chrome-fg variable.
  */
 export function Chrome({ day, counts, onSelectDay }: ChromeProps) {
   const info = DAYS.find((d) => d.key === day)!

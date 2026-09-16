@@ -21,15 +21,10 @@ export function durationMinutes(startSeconds: number, endSeconds: number): numbe
   return Math.max(0, Math.round((endSeconds - startSeconds) / 60))
 }
 
-const dateFormatter = new Intl.DateTimeFormat('en-US', {
-  timeZone: EVENT_TIME_ZONE,
-  month: 'short',
-  day: 'numeric',
-})
-
-/** "Feb 27" in the event time zone. */
-export function formatDate(unixSeconds: number): string {
-  return dateFormatter.format(new Date(unixSeconds * 1000))
+/** "390 m" or "1.5 km", the precision a walk between buildings deserves. */
+export function formatDistance(meters: number): string {
+  if (meters >= 1000) return `${(meters / 1000).toFixed(1)} km`
+  return `${Math.round(meters / 10) * 10} m`
 }
 
 const TYPE_LABELS: Record<string, string> = {

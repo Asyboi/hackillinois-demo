@@ -1,0 +1,109 @@
+.scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Sunlit */
+.caustic {
+  fill: #ffffff;
+  opacity: 0.32;
+}
+
+.silhouette {
+  fill: var(--color-ink);
+  opacity: 0.55;
+}
+
+.bubble {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 1;
+  opacity: 0.55;
+}
+
+/* Twilight */
+.bell {
+  fill: var(--color-biolum);
+  fill-opacity: 0.45;
+  stroke: var(--color-biolum);
+  stroke-width: 1;
+}
+
+.tentacle {
+  fill: none;
+  stroke: var(--color-biolum);
+  stroke-width: 1;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+
+.silhouetteDeep {
+  fill: var(--color-bone);
+  fill-opacity: 0.32;
+}
+
+.silhouetteDeep .tentacle {
+  stroke: var(--color-bone);
+  opacity: 0.4;
+}
+
+.speck {
+  fill: var(--color-bone);
+  opacity: 0.55;
+}
+
+.eye {
+  fill: var(--color-biolum);
+  opacity: 0.85;
+}
+
+/* Midnight */
+.angler {
+  fill: var(--color-deep);
+  stroke: var(--color-bone);
+  stroke-opacity: 0.3;
+  stroke-width: 1;
+}
+
+.mouth {
+  fill: none;
+  stroke: var(--color-bone);
+  stroke-opacity: 0.35;
+  stroke-width: 1;
+}
+
+.teeth {
+  fill: var(--color-bone);
+  fill-opacity: 0.6;
+}
+
+.lureStalk {
+  fill: none;
+  stroke: var(--color-bone);
+  stroke-opacity: 0.45;
+  stroke-width: 1;
+}
+
+.lure {
+  fill: var(--color-biolum);
+}
+
+.glow {
+  fill: var(--color-biolum);
+}
+
+/* Abyssal */
+.eelBody {
+  fill: none;
+  stroke: var(--color-bone);
+  stroke-opacity: 0.35;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.eelHead {
+  fill: var(--color-bone);
+  fill-opacity: 0.3;
+}

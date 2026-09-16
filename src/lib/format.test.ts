@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { durationMinutes, formatDate, formatRange, formatTime, toRoman, typeLabel } from './format'
+import {
+  durationMinutes,
+  formatDistance,
+  formatRange,
+  formatTime,
+  toRoman,
+  typeLabel,
+} from './format'
 
 const chicago = (month: number, day: number, hour: number, minute = 0) =>
   Date.UTC(2026, month - 1, day, hour + 6, minute) / 1000
@@ -14,12 +21,6 @@ describe('formatTime', () => {
 describe('formatRange', () => {
   it('joins start and end with a hyphen', () => {
     expect(formatRange(chicago(2, 27, 18), chicago(2, 27, 19, 30))).toBe('6:00 PM - 7:30 PM')
-  })
-})
-
-describe('formatDate', () => {
-  it('keeps 12:30 AM on the calendar day it falls on, in Chicago', () => {
-    expect(formatDate(chicago(2, 28, 0, 30))).toBe('Feb 28')
   })
 })
 
@@ -38,6 +39,16 @@ describe('durationMinutes', () => {
 
   it('rounds to whole minutes', () => {
     expect(durationMinutes(0, 5400)).toBe(90)
+  })
+})
+
+describe('formatDistance', () => {
+  it('rounds short walks to ten metres', () => {
+    expect(formatDistance(394.6)).toBe('390 m')
+  })
+
+  it('switches to kilometres past a thousand metres', () => {
+    expect(formatDistance(1522)).toBe('1.5 km')
   })
 })
 
