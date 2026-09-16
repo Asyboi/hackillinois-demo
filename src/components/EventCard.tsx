@@ -1,7 +1,7 @@
 import type { Ref } from 'react'
 import type { HackEvent } from '../api/types'
 import { buildingMapUrl } from '../lib/buildings'
-import { formatRange, formatTime } from '../lib/format'
+import { formatRange, formatTime, typeLabel } from '../lib/format'
 import styles from './EventCard.module.css'
 
 interface EventCardProps {
@@ -12,8 +12,8 @@ interface EventCardProps {
 }
 
 /**
- * One event, laid out like the reference schedule: title row with a points
- * pill, a time-and-place row, then the description.
+ * One event, laid out like the reference schedule: title row with type and
+ * points pills, a time-and-place row, then the description.
  */
 export function EventCard({ event, active, onHoverChange, ref }: EventCardProps) {
   const location = event.locations[0]?.description?.trim()
@@ -38,7 +38,10 @@ export function EventCard({ event, active, onHoverChange, ref }: EventCardProps)
           <CalendarIcon />
           {event.name}
         </h3>
-        <span className={styles.points}>{event.points} pts</span>
+        <div className={styles.chips}>
+          <span className={styles.type}>{typeLabel(event.eventType)}</span>
+          <span className={styles.points}>{event.points} pts</span>
+        </div>
       </div>
       <p className={styles.meta}>
         <span className={styles.metaItem}>

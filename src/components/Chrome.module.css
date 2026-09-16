@@ -6,13 +6,16 @@
   transition: color 600ms ease;
 }
 
-/* Full-bleed band, edge to edge, in the reference site's proportions. */
+/* Full-bleed banner, edge to edge, in the reference site's proportions. The
+   foam is too pale for bone text, so the banner sets its own ink. */
 .nav {
   display: flex;
   height: 88px;
+  background: var(--color-foam);
+  color: var(--color-ink);
 }
 
-/* The left pane: the wordmark on the page's own water. */
+/* The left pane: the wordmark. */
 .brandPane {
   flex: 1;
   display: flex;
@@ -42,7 +45,7 @@
   text-transform: uppercase;
 }
 
-/* The right pane: the links, on the same water as the wordmark. Set large
+/* The right pane: the links, on the same banner as the wordmark. Set large
    and spaced wide so they hold their end of the band against the wordmark,
    reaching back toward the middle without meeting it. */
 .links {
@@ -71,6 +74,13 @@
   align-items: last baseline;
   justify-content: space-between;
   padding: 14px var(--gutter) 0;
+}
+
+/* Both ends sit 4px lower, by eye, together so the shared baseline holds.
+   Relative offset, not padding, so the list and cockpit below do not move. */
+.hero > * {
+  position: relative;
+  top: 4px;
 }
 
 /* The active card's zone, said once at the top of the page instead of once

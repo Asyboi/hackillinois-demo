@@ -38,9 +38,9 @@ describe('formatMonthDay', () => {
 })
 
 describe('typeLabel', () => {
-  it('names the useful types and hides OTHER', () => {
+  it('names every type, OTHER included', () => {
     expect(typeLabel('MINIEVENT')).toBe('Mini event')
-    expect(typeLabel('OTHER')).toBeNull()
+    expect(typeLabel('OTHER')).toBe('Other')
   })
 })
 

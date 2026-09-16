@@ -34,18 +34,33 @@
   line-height: 24px;
 }
 
-.points {
+.chips {
+  display: flex;
   flex-shrink: 0;
+  gap: 8px;
+}
+
+.type,
+.points {
   padding: 6px 12px;
   border-radius: 8px;
-  background: rgba(127, 242, 208, 0.16);
-  color: var(--color-biolum);
-  /* The title's voice, Nunito at its heaviest, rather than the mono face the
-     cockpit readouts use, so the chip reads as part of the card's title row. */
+  /* The title's voice, Nunito at its heaviest, so the chip reads as part of
+     the card's title row. */
   font-size: var(--text-label);
   font-weight: 800;
   line-height: 16px;
   white-space: nowrap;
+}
+
+/* Same shape and treatment as the points chip, in teal so the two read apart. */
+.type {
+  background: var(--color-teal);
+  color: #fff;
+}
+
+.points {
+  background: var(--color-biolum-deep);
+  color: #fff;
 }
 
 .meta {

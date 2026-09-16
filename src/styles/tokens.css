@@ -16,10 +16,16 @@
   /* Accents */
   --color-ultramarine: #1b3d8a;
   --color-biolum: #7ff2d0;
+  /* Biolum's hue, dark enough to carry white text (4.85:1). The points chip. */
+  --color-biolum-deep: #13806c;
+  /* A deep teal that carries white text (5.15:1). The event type chip. */
+  --color-teal: #12788a;
   /* The one thing on the page that is not water: the sub's hardware. Allowed on
      the three ballast handwheels only, never beside the accent. See
      docs/plans/2026-09-16-ballast-valve-day-selector.md, decision 4. */
   --color-brass: #cfa554;
+  /* Pale sea foam: the nav banner across the top of the page. */
+  --color-foam: #dee4db;
 
   /* Text */
   --color-bone: #e8edef;

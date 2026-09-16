@@ -48,11 +48,12 @@ const TYPE_LABELS: Record<string, string> = {
   WORKSHOP: 'Workshop',
   MINIEVENT: 'Mini event',
   SPEAKER: 'Speaker',
+  OTHER: 'Other',
 }
 
-/** Chip text for an event type, or null for OTHER, which says nothing useful. */
-export function typeLabel(eventType: string): string | null {
-  return TYPE_LABELS[eventType] ?? null
+/** Chip text for an event type. Unknown types fall back to "Other". */
+export function typeLabel(eventType: string): string {
+  return TYPE_LABELS[eventType] ?? 'Other'
 }
 
 const ROMAN: [number, string][] = [

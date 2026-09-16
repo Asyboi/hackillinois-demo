@@ -15,11 +15,11 @@ interface ChromeProps {
 /**
  * Nav and hero. Never scrolls. The nav is a full-bleed 88px row in the
  * reference site's proportions, the wordmark at the left and the links at the
- * right, both on the page's own water. The hero below it carries the name of
+ * right, both on a pale foam banner. The hero below it carries the name of
  * the zone the active card is in and the ballast valves that pick the day.
  * The day itself is stamped on the valves; the zone's depth and clock span
- * are the cockpit's ZONE readout. Hero text is bone in every zone, set once
- * on the page through the --chrome-fg variable.
+ * are the cockpit's ZONE readout. Hero text below the banner is bone in every
+ * zone, set once on the page through the --chrome-fg variable.
  */
 export function Chrome({ day, dates, zone, onSelectDay }: ChromeProps) {
   return (
