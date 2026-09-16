@@ -1,0 +1,29 @@
+.page {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* Chrome text below the surface is bone; at the surface it flips to ink. */
+  --chrome-fg: var(--color-bone);
+  --chrome-fg-inverse: var(--color-ink);
+}
+
+.page[data-zone='sunlit'] {
+  --chrome-fg: var(--color-ink);
+  --chrome-fg-inverse: var(--color-bone);
+}
+
+.body {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: var(--column-gap);
+  padding: 22px var(--gutter) 32px;
+}
+
+.panel {
+  width: var(--panel-width);
+  flex-shrink: 0;
+}

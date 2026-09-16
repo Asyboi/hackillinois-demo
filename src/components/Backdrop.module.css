@@ -1,0 +1,30 @@
+.stage {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  transition: opacity 900ms ease;
+  will-change: opacity;
+}
+
+/* Gradients match the Paper frames G1 to G3 plus the abyssal band from F. */
+.sunlit {
+  background: linear-gradient(180deg, #3cc4d5 0%, #22a6bb 40%, #157a92 100%);
+}
+
+.twilight {
+  background: linear-gradient(180deg, #13697c 0%, #0e3a4f 45%, #092c3e 100%);
+}
+
+.midnight {
+  background: linear-gradient(180deg, #071f2e 0%, #04151f 50%, #020b12 100%);
+}
+
+.abyssal {
+  background: linear-gradient(180deg, #03111a 0%, #010810 60%, #000305 100%);
+}

@@ -1,0 +1,48 @@
+/*
+ * Design tokens, mirrored from the Paper file. Colors are named after objects
+ * in the water column, not abstractly. Coral is HackIllinois' own logo color
+ * and a real reef object, so brand and theme are the same decision.
+ */
+:root {
+  /* Water, surface to trench */
+  --color-lagoon: #38c0d2;
+  --color-sunlit: #1a8fa6;
+  --color-open-water: #0e3a4f;
+  --color-deep: #0a2b3d;
+  --color-abyss: #061c2a;
+  --color-trench: #000305;
+
+  /* Accents */
+  --color-coral: #f0553c;
+  --color-biolum: #7ff2d0;
+
+  /* Text */
+  --color-bone: #e8edef;
+  --color-ink: #062633;
+  --color-silt: #8fa8b4;
+
+  /* Glass surfaces that read on bright and dark water alike */
+  --glass-card: rgba(6, 28, 42, 0.3);
+  --glass-card-border: rgba(232, 237, 239, 0.14);
+  --glass-panel: rgba(6, 28, 42, 0.55);
+
+  /* Type */
+  --font-display: 'Nunito', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --text-micro: 11px;
+  --text-caption: 12px;
+  --text-label: 13px;
+  --text-body: 14px;
+  --text-title: 19px;
+  --text-zone: 28px;
+  --text-day: 76px;
+
+  /* Layout */
+  --gutter: 72px;
+  --list-width: 780px;
+  --panel-width: 476px;
+  --column-gap: 40px;
+  --radius-card: 14px;
+  --radius-panel: 20px;
+}

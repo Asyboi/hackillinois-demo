@@ -1,0 +1,112 @@
+.card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 15px 20px;
+  border-radius: var(--radius-card);
+  background: var(--glass-card);
+  border: 1px solid var(--glass-card-border);
+  color: var(--color-bone);
+  transition:
+    border-color 200ms ease,
+    background-color 200ms ease;
+}
+
+.card[data-active='true'] {
+  border-color: var(--color-coral);
+  background: rgba(240, 85, 60, 0.1);
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  border: 1.5px solid rgba(232, 237, 239, 0.38);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  font-weight: 500;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
+}
+
+.card[data-active='true'] .badge {
+  background: var(--color-coral);
+  border-color: var(--color-coral);
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.time {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100px;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+}
+
+.start {
+  font-size: var(--text-label);
+  font-weight: 500;
+}
+
+.duration {
+  font-size: var(--text-caption);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.66;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-size: var(--text-title);
+  font-weight: 800;
+  line-height: 24px;
+}
+
+.location {
+  font-size: var(--text-body);
+  font-weight: 500;
+  line-height: 18px;
+  opacity: 0.78;
+}
+
+.chips {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+  width: 164px;
+  flex-shrink: 0;
+}
+
+.chip {
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(232, 237, 239, 0.22);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.points {
+  border-color: transparent;
+  background: rgba(127, 242, 208, 0.14);
+  color: var(--color-biolum);
+}

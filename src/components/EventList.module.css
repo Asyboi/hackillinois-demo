@@ -1,0 +1,114 @@
+.scroller {
+  position: relative;
+  width: var(--list-width);
+  height: 100%;
+  flex-shrink: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* The Journey Panel is the progress indicator, so the native bar stays hidden. */
+  scrollbar-width: none;
+  /* Soften the bottom edge so the list reads as continuing below the fold. */
+  mask-image: linear-gradient(to bottom, black calc(100% - 60px), transparent);
+  -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 60px), transparent);
+}
+
+.scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.zone {
+  display: flex;
+  flex-direction: column;
+}
+
+.zone + .zone {
+  margin-top: 24px;
+}
+
+.zoneHeader {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  padding: 10px 20px 12px;
+  border-radius: 10px;
+  border-bottom: 1px solid rgba(232, 237, 239, 0.18);
+  background: rgba(6, 28, 42, 0.38);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--color-bone);
+}
+
+.depth {
+  width: 72px;
+  flex-shrink: 0;
+  padding-bottom: 6px;
+  font-size: var(--text-caption);
+  letter-spacing: 0.12em;
+  opacity: 0.72;
+}
+
+.zoneName {
+  font-size: var(--text-zone);
+  font-weight: 900;
+  line-height: 32px;
+  letter-spacing: -0.015em;
+}
+
+.range {
+  flex: 1;
+  text-align: right;
+  padding-bottom: 6px;
+  font-size: var(--text-caption);
+  opacity: 0.72;
+}
+
+.cards {
+  list-style: none;
+  margin: 0;
+  padding: 10px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.seafloor {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 36px 0 48px;
+  /* Tall enough that the last card can still reach the reading line when the
+     list is scrolled all the way down: container height minus line offset
+     minus one card. Otherwise the final stops could never become active. */
+  min-height: calc(100% - 150px);
+  color: var(--color-bone);
+}
+
+.seafloorMeta {
+  font-size: var(--text-caption);
+  letter-spacing: 0.12em;
+  opacity: 0.5;
+}
+
+.seafloorTitle {
+  font-size: 40px;
+  font-weight: 900;
+  line-height: 44px;
+  letter-spacing: -0.02em;
+}
+
+.surface {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: var(--color-biolum);
+  color: var(--color-ink);
+  font-size: 15px;
+  font-weight: 800;
+}
